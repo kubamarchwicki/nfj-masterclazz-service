@@ -1,4 +1,4 @@
-package com.pttrn42.microprimer.servicechassispringboot.infrastructure.actuator;
+package com.example.service.infrastructure.actuator;
 
 import org.junit.jupiter.api.Test;
 

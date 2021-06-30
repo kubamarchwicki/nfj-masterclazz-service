@@ -1,4 +1,4 @@
-package com.pttrn42.microprimer.servicechassispringboot.infrastructure.api;
+package com.example.service.infrastructure.api;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -28,8 +28,8 @@ class SwaggerConfiguration {
                 .build()
                 .useDefaultResponseMessages(false)
                 .apiInfo(new ApiInfo(
-                        "service-chassis-springboot",
-                        "This service provides an API for ...",
+                        "DEFAULT_PROJECT_NAME",
+                        "NFJ Masterclazz example project",
                         "",
                         "",
                         new Contact("", "", ""),

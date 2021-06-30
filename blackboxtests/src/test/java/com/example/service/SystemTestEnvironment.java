@@ -1,4 +1,4 @@
-package com.pttrn42.microprimer.servicechassispringboot;
+package com.example.service;
 
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.client.WireMockBuilder;

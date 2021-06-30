@@ -1,4 +1,4 @@
-package com.pttrn42.microprimer.servicechassispringboot;
+package com.example.service;
 
 import com.github.tomakehurst.wiremock.verification.LoggedRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -92,7 +92,7 @@ public class SmokeTest {
         .when()
                 .get("/actuator/prometheus")
         .then()
-                .body(containsString("app=\"service-chassis-springboot\""))
+                .body(containsString("app=\"service\""))
                 .statusCode(200);
     }
 

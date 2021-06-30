@@ -1,5 +1,5 @@
 spring:
-  application.name: service-chassis-springboot
+  application.name: service
   zipkin:
     baseUrl: ${ZIPKIN_URL}
     sender:

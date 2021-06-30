@@ -5,14 +5,14 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.pttrn42.microprimer.servicechassispringboot</groupId>
-        <artifactId>service-chassis-springboot</artifactId>
+        <groupId>com.example</groupId>
+        <artifactId>service</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <groupId>com.pttrn42.microprimer.servicechassispringboot</groupId>
-    <artifactId>service-chassis-springboot-app</artifactId>
-    <name>service-chassis-springboot: app</name>
+    <groupId>com.example</groupId>
+    <artifactId>service-app</artifactId>
+    <name>service: app</name>
 
     <properties>
         <spring-boot.version>2.3.7.RELEASE</spring-boot.version>

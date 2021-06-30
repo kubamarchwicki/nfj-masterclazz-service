@@ -5,14 +5,14 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.pttrn42.microprimer.servicechassispringboot</groupId>
-        <artifactId>service-chassis-springboot</artifactId>
+        <groupId>com.example</groupId>
+        <artifactId>service</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <groupId>com.pttrn42.microprimer.servicechassispringboot</groupId>
-    <artifactId>service-chassis-springboot-blackboxtests</artifactId>
-    <name>service-chassis-springboot: blackboxtests</name>
+    <groupId>com.example</groupId>
+    <artifactId>service-blackboxtests</artifactId>
+    <name>service: blackboxtests</name>
 
     <properties>
         <junit-jupiter.version>5.2.0</junit-jupiter.version>

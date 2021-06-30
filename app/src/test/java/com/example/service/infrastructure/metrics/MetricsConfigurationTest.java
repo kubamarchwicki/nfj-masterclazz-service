@@ -1,4 +1,4 @@
-package com.pttrn42.microprimer.servicechassispringboot.infrastructure.metrics;
+package com.example.service.infrastructure.metrics;
 
 import io.micrometer.core.instrument.Meter;
 import io.micrometer.core.instrument.MeterRegistry;

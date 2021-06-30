@@ -1,4 +1,4 @@
-package com.pttrn42.microprimer.servicechassispringboot.infrastructure.metrics;
+package com.example.service.infrastructure.metrics;
 
 import io.micrometer.core.instrument.MeterRegistry;
 import org.springframework.boot.actuate.autoconfigure.metrics.MeterRegistryCustomizer;

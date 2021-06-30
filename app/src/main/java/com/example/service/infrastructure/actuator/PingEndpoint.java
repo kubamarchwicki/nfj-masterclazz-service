@@ -1,4 +1,4 @@
-package com.pttrn42.microprimer.servicechassispringboot.infrastructure.actuator;
+package com.example.service.infrastructure.actuator;
 
 import org.springframework.boot.actuate.endpoint.annotation.Endpoint;
 import org.springframework.boot.actuate.endpoint.annotation.ReadOperation;
