@@ -4,11 +4,18 @@ services:
   service:
     build: ../../../
     environment:
+      KAFKA_SERVER: kafka:9092
       ZIPKIN_URL: http://zipkin:8080
     links:
       - wiremock:zipkin
+      - kafka:kafka
     ports:
       - 8080
 
   wiremock:
     image: rodolpheche/wiremock:2.24.0-alpine
+
+  kafka:
+    image: johnnypark/kafka-zookeeper
+    environment:
+      ADVERTISED_HOST: kafka

@@ -1,5 +1,10 @@
 spring:
   application.name: service
+  kafka:
+    bootstrap-servers: ${KAFKA_SERVER}
+    consumer:
+      auto-offset-reset: earliest
+      group-id: gov-audit-service
   zipkin:
     baseUrl: ${ZIPKIN_URL}
     sender:

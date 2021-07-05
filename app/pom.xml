@@ -57,6 +57,12 @@
             <version>${swagger.version}</version>
         </dependency>
 
+        <!-- queueing -->
+        <dependency>
+            <groupId>org.springframework.kafka</groupId>
+            <artifactId>spring-kafka</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-registry-prometheus</artifactId>
@@ -98,6 +104,7 @@
             <scope>runtime</scope>
         </dependency>
 
+        <!-- testing -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -108,6 +115,17 @@
                     <artifactId>junit-vintage-engine</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.kafka</groupId>
+            <artifactId>spring-kafka-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.awaitility</groupId>
+            <artifactId>awaitility</artifactId>
+            <version>4.1.0</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -120,14 +138,28 @@
                 <version>3.2.0</version>
                 <executions>
                     <execution>
-                        <phase>generate-test-sources</phase>
+                        <id>generate-test-sources</id>
                         <goals>
                             <goal>add-test-source</goal>
                         </goals>
                         <configuration>
                             <sources>
+                                <source>src/main/java</source>
                                 <source>src/integration-test/java</source>
                             </sources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generate-test-resources</id>
+                        <goals>
+                            <goal>add-test-resource</goal>
+                        </goals>
+                        <configuration>
+                            <resources>
+                                <resource>
+                                    <directory>src/main/resources</directory>
+                                </resource>
+                            </resources>
                         </configuration>
                     </execution>
                 </executions>
