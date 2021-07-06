@@ -3,10 +3,12 @@ package com.example.service.gateway.audit;
 import io.micrometer.core.instrument.MeterRegistry;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
 
 @RequiredArgsConstructor
 public class GovAuditServiceClient {
 
+    final RestTemplate restTemplate;
     final MeterRegistry meterRegistry;
 
     public ResponseEntity<Void> dispatchCustomerInformation() {

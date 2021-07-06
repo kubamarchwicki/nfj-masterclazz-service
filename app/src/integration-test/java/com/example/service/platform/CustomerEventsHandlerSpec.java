@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.test.context.EmbeddedKafka;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -16,6 +17,7 @@ import java.util.UUID;
 import static org.mockito.Mockito.after;
 import static org.mockito.Mockito.verify;
 
+@Testcontainers
 @SpringBootTest(properties = "spring.kafka.bootstrap-servers=localhost:9092")
 //@DirtiesContext
 @EmbeddedKafka(partitions = 1, topics = KafkaConsumerConfiguration.CUSTOMER_ACTIVITY_TOPIC,
@@ -42,4 +44,5 @@ class CustomerEventsHandlerSpec {
         verify(mockedProcessor, after(5000))
                 .processMessage(new CustomerLoggedInEvent(uuid, time));
     }
+
 }

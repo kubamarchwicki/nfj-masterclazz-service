@@ -12,13 +12,14 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.autoconfigure.metrics.CompositeMeterRegistryAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.web.client.RestTemplate;
 
 class GovAuditServiceClientTest {
 
     @Test
     void shouldRecordTimingInformation_mocks() {
         var registry = Mockito.mock(MeterRegistry.class);
-        var sut = new GovAuditServiceClient(registry);
+        var sut = new GovAuditServiceClient(new RestTemplate(), registry);
 
         Mockito.when(registry.timer("audit.service.timer"))
                 .thenReturn(new NoopTimer(Mockito.mock(Meter.Id.class)));
@@ -32,7 +33,7 @@ class GovAuditServiceClientTest {
     void shouldRecordTimingInformation() {
         var registry = new SimpleMeterRegistry();
 
-        var sut = new GovAuditServiceClient(registry);
+        var sut = new GovAuditServiceClient(new RestTemplate(), registry);
         sut.dispatchCustomerInformation();
 
         Timer timer = registry.timer("audit.service.timer");
