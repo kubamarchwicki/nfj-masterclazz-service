@@ -34,3 +34,12 @@ springfox:
 
 hawtio:
   authenticationEnabled: false
+
+gov-endpoint:
+  service:
+    url: ${GOVENDPOINT_SERVICE_URL:http://important.gov:8080}
+
+app:
+  service:
+    url:
+      customers: ${CUSTOMER_SERVICE_UPSTREAM_URL:http://customers.svc:8080}

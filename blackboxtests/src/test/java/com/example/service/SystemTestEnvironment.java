@@ -4,6 +4,11 @@ import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.client.WireMockBuilder;
 import io.restassured.RestAssured;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.clients.admin.Admin;
+import org.apache.kafka.clients.admin.NewTopic;
+import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.common.serialization.StringSerializer;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.testcontainers.containers.DockerComposeContainer;
@@ -11,7 +16,10 @@ import org.testcontainers.containers.output.Slf4jLogConsumer;
 import org.testcontainers.containers.wait.strategy.Wait;
 
 import java.io.File;
+import java.net.InetAddress;
+import java.util.List;
 import java.util.Objects;
+import java.util.Properties;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.IntStream;
 
@@ -23,14 +31,14 @@ import static org.testcontainers.containers.DockerComposeContainer.RemoveImages.
 @Slf4j
 class SystemTestEnvironment implements BeforeAllCallback {
     static final int SERVICE_NUM_INSTANCES = 2;
-
-    private final String SERVICE_BASE_NAME = "service";
-    private final int SERVICE_PORT = 8080;
     private static final String WIREMOCK_CONTAINER = "wiremock_1";
     private static final int WIREMOCK_PORT = 8080;
-
-    private DockerComposeContainer environment;
-    private boolean environmentStarted = false;
+    private static final String KAFKA_CONTAINER = "kafka_1";
+    private static final int KAFKA_PORT = 9092;
+    private final String SERVICE_BASE_NAME = "service";
+    private final int SERVICE_PORT = 8080;
+    private static DockerComposeContainer environment;
+    private static boolean environmentStarted = false;
 
     @Override
     public void beforeAll(ExtensionContext context) {
@@ -38,6 +46,8 @@ class SystemTestEnvironment implements BeforeAllCallback {
             environment = new DockerComposeContainer(getDockerComposeFile())
                     .withLocalCompose(true)
                     .withExposedService(WIREMOCK_CONTAINER, WIREMOCK_PORT, Wait.forListeningPort())
+//                    .withLogConsumer(WIREMOCK_CONTAINER, new Slf4jLogConsumer(log).withPrefix(WIREMOCK_CONTAINER))
+                    .withExposedService(KAFKA_CONTAINER, KAFKA_PORT, Wait.forListeningPort())
                     .withScaledService(SERVICE_BASE_NAME, SERVICE_NUM_INSTANCES)
                     .withRemoveImages(LOCAL);
 
@@ -95,6 +105,19 @@ class SystemTestEnvironment implements BeforeAllCallback {
                 .host(environment.getServiceHost(WIREMOCK_CONTAINER, WIREMOCK_PORT))
                 .port(environment.getServicePort(WIREMOCK_CONTAINER, WIREMOCK_PORT))
                 .build();
+    }
+
+    KafkaProducer<String, String> kafka() {
+        Properties config = new Properties();
+        config.put(ProducerConfig.CLIENT_ID_CONFIG, "localhost");
+        config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, environment.getServiceHost(KAFKA_CONTAINER, KAFKA_PORT) + ":" + environment.getServicePort(KAFKA_CONTAINER, KAFKA_PORT));
+        config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,
+                StringSerializer.class.getCanonicalName());
+        config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
+                StringSerializer.class.getCanonicalName());
+        config.put(ProducerConfig.ACKS_CONFIG, "all");
+
+        return new KafkaProducer<>(config);
     }
 
     void givenZipkinSupport() {

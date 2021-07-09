@@ -14,27 +14,31 @@ import org.springframework.boot.actuate.autoconfigure.metrics.CompositeMeterRegi
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.web.client.RestTemplate;
 
+import java.net.URI;
+
+import static org.mockito.Mockito.*;
+
 class GovAuditServiceClientTest {
 
     @Test
     void shouldRecordTimingInformation_mocks() {
-        var registry = Mockito.mock(MeterRegistry.class);
-        var sut = new GovAuditServiceClient(new RestTemplate(), registry);
+        var registry = mock(MeterRegistry.class);
+        var sut = new GovAuditServiceClient(URI.create("http://foo.bar"), mock(RestTemplate.class), registry);
 
-        Mockito.when(registry.timer("audit.service.timer"))
-                .thenReturn(new NoopTimer(Mockito.mock(Meter.Id.class)));
+        when(registry.timer("audit.service.timer"))
+                .thenReturn(new NoopTimer(mock(Meter.Id.class)));
 
-        sut.dispatchCustomerInformation();
+        sut.dispatchCustomerInformation(GovAuditServiceClient.GovAuditDto.builder().build());
 
-        Mockito.verify(registry).timer("audit.service.timer");
+        verify(registry).timer("audit.service.timer");
     }
 
     @Test
     void shouldRecordTimingInformation() {
         var registry = new SimpleMeterRegistry();
 
-        var sut = new GovAuditServiceClient(new RestTemplate(), registry);
-        sut.dispatchCustomerInformation();
+        var sut = new GovAuditServiceClient(URI.create("http://foo.bar"), mock(RestTemplate.class), registry);
+        sut.dispatchCustomerInformation(GovAuditServiceClient.GovAuditDto.builder().build());
 
         Timer timer = registry.timer("audit.service.timer");
         Assertions.assertThat(timer.count())

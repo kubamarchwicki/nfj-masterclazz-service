@@ -1,5 +1,7 @@
 package com.example.service.platform;
 
+import com.example.service.domain.EventsAuditProcessor;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,5 +19,11 @@ class KafkaConsumerConfiguration {
                 .partitions(1)
                 .replicas(1)
                 .build();
+    }
+
+    @Bean
+    CustomerEventsHandler customerEventsHandler(ObjectMapper mapper,
+                                                EventsAuditProcessor processor) {
+        return new CustomerEventsHandler(mapper, processor);
     }
 }
