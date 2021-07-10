@@ -3,6 +3,8 @@ package com.example.service;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.hamcrest.CoreMatchers;
+import org.hamcrest.Matcher;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
@@ -18,13 +20,14 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static org.awaitility.Awaitility.await;
 
 @Slf4j
-public class GovAuditingIntegrationTest {
+class GovAuditingIntegrationTest {
+
     @RegisterExtension
     public static SystemTestEnvironment environment = new SystemTestEnvironment();
     public final String KAFKA_TOPIC = "customer.activity";
 
     @Test
-    void kafka() throws Exception {
+    void customerLoggedIn_notifyGovAuditSystem() throws Exception {
         var uuid = UUID.randomUUID();
         var time = LocalDateTime.now();
 
@@ -52,13 +55,16 @@ public class GovAuditingIntegrationTest {
         environment.kafka()
                 .send(new ProducerRecord<>(KAFKA_TOPIC, payload));
 
-        await().atMost(Duration.ofSeconds(5))
-                .pollInterval(Duration.ofMillis(500))
-                .untilAsserted(() -> environment.wireMock().verifyThat(
-                        postRequestedFor(urlEqualTo("/api/v2/activity"))
-                                .withHeader("Host", equalTo("important.gov:8080"))
-                                .withRequestBody(matchingJsonPath("$.customer_id", equalTo(uuid.toString())))
-                ));
+        var request = postRequestedFor(urlEqualTo("/api/v2/activity"))
+                .withHeader("Host", equalTo("important.gov:8080"))
+                .withRequestBody(matchingJsonPath("$.customer_id", equalTo(uuid.toString())));
+        try {
+            await().atMost(Duration.ofSeconds(5))
+                    .pollInterval(Duration.ofMillis(500))
+                    .until(() -> environment.wireMock().find(request).size(), CoreMatchers.equalTo(1));
+        } finally {
+            environment.wireMock().verifyThat(1, request);
+        }
     }
 
 }
