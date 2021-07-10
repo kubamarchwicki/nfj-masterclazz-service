@@ -12,6 +12,7 @@
     <modules>
         <module>app</module>
         <module>blackboxtests</module>
+        <module>endtoend</module>
     </modules>
 
     <properties>
@@ -36,6 +37,7 @@
                 <version>2.22.2</version> <!-- support for junit5 -->
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <version>2.22.2</version> <!-- support for junit5 -->
             </plugin>
