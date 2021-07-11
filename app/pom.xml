@@ -19,6 +19,7 @@
         <pactflow.token>${env.PACTFLOW_API_TOKEN}</pactflow.token>
         <spring-boot.version>2.3.7.RELEASE</spring-boot.version>
         <spring-cloud.version>Hoxton.SR9</spring-cloud.version>
+        <spring-cloud-contract.version>3.0.3</spring-cloud-contract.version>
         <swagger.version>3.0.0</swagger.version>
         <hawtio.version>2.10.2</hawtio.version>
         <logstash-logback-encoder.version>6.3</logstash-logback-encoder.version>
@@ -179,6 +180,14 @@
             <version>4.2.7</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- spring contract verification -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-contract-verifier</artifactId>
+            <version>${spring-cloud-contract.version}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -265,6 +274,8 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <!-- pact:publish -->
             <plugin>
                 <groupId>au.com.dius.pact.provider</groupId>
                 <artifactId>maven</artifactId>
@@ -273,6 +284,18 @@
                     <pactBrokerUrl>https://footest-broker.pactflow.io</pactBrokerUrl>
                     <pactBrokerToken>${pactflow.token}</pactBrokerToken>
                     <pactBrokerAuthenticationScheme>Bearer</pactBrokerAuthenticationScheme>
+                </configuration>
+            </plugin>
+
+            <!-- spring-cloud-contracts provider -->
+            <plugin>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-contract-maven-plugin</artifactId>
+                <version>${spring-cloud-contract.version}</version>
+                <extensions>true</extensions>
+                <configuration>
+<!--                    <contractsDirectory>${project.build.testOutputDirectory}/contracts</contractsDirectory>-->
+                    <baseClassForTests>com.example.service.domain.LogsTestBase</baseClassForTests>
                 </configuration>
             </plugin>
         </plugins>

@@ -8,5 +8,6 @@ import java.util.UUID;
 public class OutboxLogEntry {
 
     UUID customerId;
+    
 
 }
