@@ -1,6 +1,7 @@
 package com.example.service.domain;
 
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
+import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -13,7 +14,7 @@ import java.util.UUID;
 import static org.mockito.Mockito.when;
 
 @WebMvcTest
-public class EventsAuditControllerTest {
+class EventsAuditControllerTest {
 
     @Autowired
     MockMvc mockMvc;
@@ -33,14 +34,16 @@ public class EventsAuditControllerTest {
 
     @Test
     void someLogValues_shouldReturnList() {
+        var uuid = UUID.randomUUID();
         when(repository.entries())
-                .thenReturn(List.of(new OutboxLogEntry(UUID.randomUUID())));
+                .thenReturn(List.of(new OutboxLogEntry(uuid)));
 
         RestAssuredMockMvc.given()
                 .mockMvc(mockMvc)
             .when()
                 .get("/audit/outbox-log")
             .then()
+                .body("[0].customerId", CoreMatchers.equalTo(uuid.toString()))
                 .statusCode(200);
     }
 

@@ -15,11 +15,14 @@
     <name>service: app</name>
 
     <properties>
+        <!--suppress UnresolvedMavenProperty -->
+        <pactflow.token>${env.PACTFLOW_API_TOKEN}</pactflow.token>
         <spring-boot.version>2.3.7.RELEASE</spring-boot.version>
         <spring-cloud.version>Hoxton.SR9</spring-cloud.version>
         <swagger.version>3.0.0</swagger.version>
         <hawtio.version>2.10.2</hawtio.version>
         <logstash-logback-encoder.version>6.3</logstash-logback-encoder.version>
+        <pact.version>4.1.23</pact.version>
     </properties>
 
     <dependencyManagement>
@@ -155,6 +158,20 @@
             <version>3.3.0</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- pact -->
+        <dependency>
+            <groupId>au.com.dius.pact.consumer</groupId>
+            <artifactId>junit5</artifactId>
+            <version>${pact.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>au.com.dius.pact.consumer</groupId>
+            <artifactId>java8</artifactId>
+            <version>${pact.version}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -235,6 +252,16 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>au.com.dius.pact.provider</groupId>
+                <artifactId>maven</artifactId>
+                <version>4.1.11</version>
+                <configuration>
+                    <pactBrokerUrl>https://footest-broker.pactflow.io</pactBrokerUrl>
+                    <pactBrokerToken>${pactflow.token}</pactBrokerToken>
+                    <pactBrokerAuthenticationScheme>Bearer</pactBrokerAuthenticationScheme>
+                </configuration>
             </plugin>
         </plugins>
     </build>

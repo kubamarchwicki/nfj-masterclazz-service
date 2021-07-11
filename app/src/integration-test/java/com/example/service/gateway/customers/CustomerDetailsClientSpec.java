@@ -14,6 +14,8 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Optional;
 import java.util.UUID;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 @JsonTest
 class CustomerDetailsClientSpec {
 
@@ -41,9 +43,11 @@ class CustomerDetailsClientSpec {
         Optional<CustomerDetailsDto> maybeCustomer = new CustomerDetailsClient(wireMock.getBaseUri(), new RestTemplate())
                 .fetchCustomerById(uuid);
 
-        Assertions.assertThat(maybeCustomer)
+        assertThat(maybeCustomer)
                 .isNotEmpty()
-                .contains(dto);
+                .hasValueSatisfying(d -> {
+                    assertThat(d.getCustomerId()).isEqualByComparingTo(uuid);
+                });
     }
 
     @Test
