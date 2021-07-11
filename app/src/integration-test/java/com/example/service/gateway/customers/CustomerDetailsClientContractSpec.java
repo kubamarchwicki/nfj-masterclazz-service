@@ -24,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class CustomerDetailsClientContractSpec {
 
     public static final String PROVIDER_NAME = "customers";
-    public static final String CONSUMER_NAME = "gov-audit-service";
+    public static final String CONSUMER_NAME = "service";
 
     private UUID EXISTING_CUSTOMER_ID = UUID.fromString("12345678-0000-0000-0000-000000000000");
     private UUID MISSING_CUSTOMER_ID = UUID.fromString("98765432-0000-0000-0000-000000000000");

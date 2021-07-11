@@ -1,5 +1,5 @@
 spring:
-  application.name: gov-audit-service
+  application.name: service
   kafka:
     bootstrap-servers: ${KAFKA_SERVER}
     consumer:
