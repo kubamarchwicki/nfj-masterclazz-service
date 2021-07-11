@@ -14,7 +14,7 @@ import java.util.UUID;
 import static org.mockito.Mockito.when;
 
 @WebMvcTest
-class EventsAuditControllerTest {
+class EventsAuditControllerSpec {
 
     @Autowired
     MockMvc mockMvc;

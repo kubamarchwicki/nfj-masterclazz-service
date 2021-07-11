@@ -144,7 +144,6 @@
             <version>1.15.3</version>
             <scope>test</scope>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.apache.kafka/kafka-clients -->
 
         <dependency>
             <groupId>org.awaitility</groupId>
@@ -170,6 +169,14 @@
             <groupId>au.com.dius.pact.consumer</groupId>
             <artifactId>java8</artifactId>
             <version>${pact.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- pact provider verification -->
+        <dependency>
+            <groupId>au.com.dius.pact.provider</groupId>
+            <artifactId>junit5spring</artifactId>
+            <version>4.2.7</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -219,8 +226,12 @@
                     </execution>
                 </executions>
                 <configuration>
+                    <systemPropertyVariables>
+                        <pactbroker.auth.token>${pactflow.token}</pactbroker.auth.token>
+                    </systemPropertyVariables>
                     <includes>
                         <include>**/*Spec.java</include>
+                        <include>**/*Tests.java</include>
                     </includes>
                 </configuration>
             </plugin>
@@ -230,6 +241,7 @@
                 <configuration>
                     <excludes>
                         <exclude>**/*Spec.java</exclude>
+                        <exclude>**/*Tests.java</exclude>
                     </excludes>
                 </configuration>
             </plugin>
