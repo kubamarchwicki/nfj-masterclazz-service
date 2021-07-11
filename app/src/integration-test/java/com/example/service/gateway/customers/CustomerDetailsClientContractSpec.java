@@ -68,7 +68,7 @@ class CustomerDetailsClientContractSpec {
     @Pact(provider = PROVIDER_NAME, consumer = CONSUMER_NAME)
     public RequestResponsePact customerMissing(PactDslWithProvider builder) {
         return builder
-                .given("a customer does not exists")
+                .given("a customer does not exist")
                 .uponReceiving("get customer details")
                 .path("/public/customer/" + MISSING_CUSTOMER_ID)
                 .method("GET")
